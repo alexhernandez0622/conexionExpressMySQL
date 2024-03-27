@@ -1,13 +1,12 @@
 const express = require('express');
-const mysql = require('mysql');
+const { Pool } = require('pg');
 const cors = require('cors');
 const app = express();
 
 // Configuración de CORS
 app.use(cors());
 
-
-const PORT = 3000; // Puerto específico
+const PORT = process.env.PORT || 3000; // Puerto específico
 
 // Configurar la conexión a la base de datos PostgreSQL
 const pool = new Pool({
