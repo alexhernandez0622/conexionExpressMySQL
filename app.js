@@ -6,23 +6,15 @@ const app = express();
 // Configuración de CORS
 app.use(cors());
 
-const PORT = process.env.PORT || 3000; // Puerto específico
+const PORT = 3000; // Puerto específico
 
 // Configurar la conexión a la base de datos PostgreSQL
 const pool = new Pool({
-  user: 'admin',
-  host: 'dpg-cn747nqcn0vc738si77g-a',
-  database: 'deploy_render_0qjh',
-  password: 'ngIomlnYMBZMH06aiESZOpfQBlBXDj2O',
-  port: 5432, // Puerto por defecto de PostgreSQL
-});
-// Conectar a la base de datos
-connection.connect((err) => {
-  if (err) {
-    console.error('Error al conectar a la base de datos:', err);
-    return;
-  }
-  console.log('Conexión a la base de datos MySQL establecida');
+  user: 'tu_usuario',
+  host: 'localhost',
+  database: 'persona',
+  password: 'tu_contraseña',
+  port: 5432, // Puerto predeterminado de PostgreSQL
 });
 
 // Middleware para parsear JSON
@@ -31,35 +23,35 @@ app.use(express.json());
 // Ruta para obtener los datos de personas desde la base de datos
 app.get('/CRUDRepo/ConsultarPersonas', (req, res) => {
   // Realizar consulta SQL para obtener los datos de las personas
-  connection.query('SELECT * FROM humano', (err, results) => {
+  pool.query('SELECT * FROM humano', (err, results) => {
     if (err) {
       console.error('Error al ejecutar la consulta:', err);
       res.status(500).json({ error: 'Error interno del servidor' });
       return;
     }
     // Enviar los resultados como respuesta en formato JSON
-    res.json(results);
+    res.json(results.rows);
   });
 });
 
 // Ruta para agregar una nueva persona
 app.post('/CRUDRepo/AgregarPersona', (req, res) => {
-    const { nombre, apellido, email, edad} = req.body;
-    connection.query('INSERT INTO humano (nombre, apellido, email, edad) VALUES (?, ?, ?, ?)', [nombre, apellido, email, edad], (err, results) => {
-      if (err) {
-        console.error('Error al agregar la persona:', err);
-        res.status(500).json({ error: 'Error interno del servidor' });
-        return;
-      }
-      res.status(201).json({ message: 'Persona agregada exitosamente' });
-    });
+  const { nombre, apellido, email, edad} = req.body;
+  pool.query('INSERT INTO humano (nombre, apellido, email, edad) VALUES ($1, $2, $3, $4)', [nombre, apellido, email, edad], (err, results) => {
+    if (err) {
+      console.error('Error al agregar la persona:', err);
+      res.status(500).json({ error: 'Error interno del servidor' });
+      return;
+    }
+    res.status(201).json({ message: 'Persona agregada exitosamente' });
   });
+});
 
 // Ruta para actualizar los datos de una persona
 app.put('/CRUDRepo/ActualizarPersona/:id', (req, res) => {
   const { id } = req.params;
   const { nombre, edad } = req.body;
-  connection.query('UPDATE humano SET nombre = ?, edad = ? WHERE id = ?', [nombre, edad, id], (err, results) => {
+  pool.query('UPDATE humano SET nombre = $1, edad = $2 WHERE id = $3', [nombre, edad, id], (err, results) => {
     if (err) {
       console.error('Error al actualizar la persona:', err);
       res.status(500).json({ error: 'Error interno del servidor' });
@@ -72,7 +64,7 @@ app.put('/CRUDRepo/ActualizarPersona/:id', (req, res) => {
 // Ruta para eliminar una persona
 app.delete('/CRUDRepo/EliminarPersona/:id', (req, res) => {
   const { id } = req.params;
-  connection.query('DELETE FROM humano WHERE id = ?', [id], (err, results) => {
+  pool.query('DELETE FROM humano WHERE id = $1', [id], (err, results) => {
     if (err) {
       console.error('Error al eliminar la persona:', err);
       res.status(500).json({ error: 'Error interno del servidor' });
