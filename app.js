@@ -9,14 +9,14 @@ app.use(cors());
 
 const PORT = 3000; // Puerto específico
 
-// Configurar la conexión a la base de datos MySQL
-const connection = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: '',
-  database: 'persona'
+// Configurar la conexión a la base de datos PostgreSQL
+const pool = new Pool({
+  user: 'admin',
+  host: 'dpg-cn747nqcn0vc738si77g-a',
+  database: 'deploy_render_0qjh',
+  password: 'ngIomlnYMBZMH06aiESZOpfQBlBXDj2O',
+  port: 5432, // Puerto por defecto de PostgreSQL
 });
-
 // Conectar a la base de datos
 connection.connect((err) => {
   if (err) {
