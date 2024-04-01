@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", function() {
       const email = document.getElementById('email').value;
       const edad = document.getElementById('edad').value;
   
-      fetch('http://localhost:3000/CRUDRepo/AgregarPersona', {
+      fetch('https://conexionexpressmysql.onrender.com/CRUDRepo/AgregarPersona', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
