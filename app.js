@@ -11,7 +11,7 @@ const PORT = 3000; // Puerto específico
 // Configurar la conexión a la base de datos PostgreSQL
 const pool = new Pool({
   user: 'admin',
-  host: 'dpg-co5idpsf7o1s73a2h0hg-a.oregon-postgres.render.com',
+  host: 'dpg-co5idpsf7o1s73a2h0hg-a',
   database: 'deploy_render_0qjh_tsli',
   password: 'Tpki9Wco0FC6F6nSEFDdJEEKc9e12A6S',
   port: 5432, // Puerto predeterminado de PostgreSQL
